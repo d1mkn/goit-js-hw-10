@@ -40,7 +40,7 @@ function renderListMarkup(data) {
     return data.map(({ name, flags }) => {
       refs.countryList.insertAdjacentHTML(
         'beforeend',
-        `<li><img src=${flags.svg} width="60" height="40">${name.official}</li>`
+        `<li><img src=${flags.svg} alt="flag" width="60" height="40">${name.official}</li>`
       );
     });
   }
@@ -52,7 +52,7 @@ function renderCountryInfo(data) {
     return data.map(({ name, flags, capital, population, languages }) => {
       refs.countryInfo.insertAdjacentHTML(
         'beforeend',
-        `<span><img src=${flags.svg} width="50" height="30" /><h2>${
+        `<span><img src=${flags.svg} alt="flag" width="50" height="30" /><h2>${
           name.official
         }</h2></span>
       <p><b>Capital:</b> ${capital}</p>
