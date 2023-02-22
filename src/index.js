@@ -18,6 +18,9 @@ function onInput(e) {
   }
 
   fetchCountries(countryName).then(data => {
+    if (data.status !== 200) {
+      clear();
+    }
     toManyData(data);
     renderListMarkup(data);
     renderCountryInfo(data);
