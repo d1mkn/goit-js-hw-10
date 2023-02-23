@@ -10,26 +10,27 @@ const refs = {
 };
 const DEBOUNCE_DELAY = 300;
 
-function onInput(e) {
+refs.input.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
+
+async function onInput(e) {
   const countryName = e.target.value.trim();
   if (countryName === '') {
     clear();
     return;
   }
-
-  fetchCountries(countryName).then(data => {
-    if (data.status !== 200) {
-      clear();
-    }
-    toManyData(data);
-    renderListMarkup(data);
-    renderCountryInfo(data);
-  });
+  try {
+    const fetch = await fetchCountries(countryName);
+    clear();
+    toManyData(fetch);
+    renderListMarkup(fetch);
+    renderCountryInfo(fetch);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 function toManyData(data) {
   if (data.length >= 10) {
-    clear();
     Notiflix.Notify.info(
       'Too many matches found. Please enter a more specific name.'
     );
@@ -39,7 +40,6 @@ function toManyData(data) {
 
 function renderListMarkup(data) {
   if (data.length <= 10) {
-    clear();
     return data.map(({ name, flags }) => {
       refs.countryList.insertAdjacentHTML(
         'beforeend',
@@ -70,5 +70,3 @@ function clear() {
   refs.countryList.innerHTML = '';
   refs.countryInfo.innerHTML = '';
 }
-
-refs.input.addEventListener('input', debounce(onInput, DEBOUNCE_DELAY));
